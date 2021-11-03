@@ -18,9 +18,9 @@ namespace GenericRepositoryDemo.Controllers
         }
 
         [HttpGet]
-        public async Task<List<Blog>> GetAllAsync()
+        public async Task<List<Blog>> GetAllAsync([FromQuery] int count, [FromQuery] int skip, [FromQuery] string searchTerm)
         {
-            return await _repository.GetAllAsync();
+            return await _repository.GetAllAsync(count, skip, searchTerm);
         }
 
         [HttpGet("{id}")]
