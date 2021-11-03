@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GenericRepositoryDemo.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -16,8 +17,18 @@ namespace GenericRepositoryDemo.Repositories
             _dbSet = _context.Set<Entity>();
         }
 
-        public async Task<List<Entity>> GetAllAsync()
+        public virtual async Task<List<Entity>> GetAllAsync(int count = -1, int skip = -1, string searchTerm = null)
         {
+            if (!String.IsNullOrEmpty(searchTerm))
+            {
+                throw new Exception("Cannot search in generic repository. Please fix this by extending the custom repository.");
+            }
+
+            if (count != -1 || skip != -1)
+            {
+                return await _dbSet.Skip(skip).Take(count).ToListAsync();
+            }
+
             return await _dbSet.ToListAsync();
         }
 
